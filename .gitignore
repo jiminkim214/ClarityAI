@@ -1,0 +1,73 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+.env
+__pycache__/
+
+venv/
+.dartServer/
+*.resolved
+
+build/
+.vscode/
+
+# Python cache and compiled files
+*.py[cod]
+*$py.class
+*.so
+
+# Transformers and ML model cache
+.cache/
+**/transformers/
+**/sentence_transformers/
+.transformers_cache/
+.sentence_transformers_cache/
+
+# Hugging Face cache
+~/.cache/huggingface/
+**/huggingface/
+
+# Downloaded models and datasets
+**/models/downloads/
+**/datasets/downloads/
+*.safetensors
+*.onnx
+*.bin
+*.xml
+
+# Model files
+*.pt
+*.pth
+*.pkl
+*.joblib
+*.h5
+*.hdf5
+
+# Database files
+*.db
+*.sqlite3
+
+# Environment files
+.env.local
+.env.*.local

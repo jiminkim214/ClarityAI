@@ -29,25 +29,19 @@ export function Footer() {
               
               <div className="flex gap-4">
                 <a 
-                  href="#" 
-                  className="w-12 h-12 bg-white/10 hover:bg-white/20 border border-white/20 hover:border-purple-500/50 rounded-xl flex items-center justify-center transition-all group"
-                >
-                  <Twitter className="w-5 h-5 text-gray-300 group-hover:text-purple-400 transition-colors" />
-                </a>
-                <a 
-                  href="#" 
+                  href="https://github.com/jiminkim214/ClarityAI" 
                   className="w-12 h-12 bg-white/10 hover:bg-white/20 border border-white/20 hover:border-purple-500/50 rounded-xl flex items-center justify-center transition-all group"
                 >
                   <Github className="w-5 h-5 text-gray-300 group-hover:text-purple-400 transition-colors" />
                 </a>
                 <a 
-                  href="#" 
+                  href="https://www.linkedin.com/in/jiminkim214" 
                   className="w-12 h-12 bg-white/10 hover:bg-white/20 border border-white/20 hover:border-purple-500/50 rounded-xl flex items-center justify-center transition-all group"
                 >
                   <Linkedin className="w-5 h-5 text-gray-300 group-hover:text-purple-400 transition-colors" />
                 </a>
                 <a 
-                  href="#" 
+                  href="mailto:jiminkim214@gmail.com" 
                   className="w-12 h-12 bg-white/10 hover:bg-white/20 border border-white/20 hover:border-purple-500/50 rounded-xl flex items-center justify-center transition-all group"
                 >
                   <Mail className="w-5 h-5 text-gray-300 group-hover:text-purple-400 transition-colors" />
@@ -85,15 +79,6 @@ export function Footer() {
               <p className="text-gray-400 text-sm font-light">
                 © 2025 Clarity AI. All rights reserved.
               </p>
-              <div className="flex items-center gap-8">
-                <p className="text-gray-400 text-sm font-light">
-                  Made with ❤️ for better mental health
-                </p>
-                <div className="flex items-center gap-2">
-                  <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
-                  <span className="text-gray-400 text-sm font-light">All systems operational</span>
-                </div>
-              </div>
             </div>
           </div>
         </div>

@@ -60,17 +60,17 @@ CHROMA_PERSIST_DIRECTORY=./data/chroma_db
 
 ```bash
 # Setup database and load initial data
-python scripts/setup_database.py
+python3 setup_database.py
 
 # Train models (optional - can be done later)
-python scripts/train_models.py
+python3 train_models.py
 ```
 
 ### 4. Run the Server
 
 ```bash
 # Development server
-python -m src.main
+python3 -m src.main
 
 # Or with uvicorn directly
 uvicorn src.main:app --reload --host 0.0.0.0 --port 8000

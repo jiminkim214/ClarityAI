@@ -48,29 +48,6 @@ export function Footer() {
                 </a>
               </div>
             </div>
-
-            {/* Right Column - Links */}
-            <div className="grid md:grid-cols-2 gap-12">
-              <div className="space-y-6">
-                <h3 className="text-white font-medium text-lg">Product</h3>
-                <ul className="space-y-4">
-                  <li><a href="#" className="text-gray-300 hover:text-white transition-colors font-light">Features</a></li>
-                  <li><a href="#" className="text-gray-300 hover:text-white transition-colors font-light">Security</a></li>
-                  <li><a href="#" className="text-gray-300 hover:text-white transition-colors font-light">API</a></li>
-                  <li><a href="#" className="text-gray-300 hover:text-white transition-colors font-light">Documentation</a></li>
-                </ul>
-              </div>
-
-              <div className="space-y-6">
-                <h3 className="text-white font-medium text-lg">Support</h3>
-                <ul className="space-y-4">
-                  <li><a href="#" className="text-gray-300 hover:text-white transition-colors font-light">Help Center</a></li>
-                  <li><a href="#" className="text-gray-300 hover:text-white transition-colors font-light">Privacy Policy</a></li>
-                  <li><a href="#" className="text-gray-300 hover:text-white transition-colors font-light">Terms of Service</a></li>
-                  <li><a href="#" className="text-gray-300 hover:text-white transition-colors font-light">Contact</a></li>
-                </ul>
-              </div>
-            </div>
           </div>
 
           {/* Bottom Section */}

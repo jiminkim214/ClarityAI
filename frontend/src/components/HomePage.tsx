@@ -126,8 +126,7 @@ export function HomePage({ currentSection, setCurrentSection, isLoggedIn, setIsL
             </div>
             
             <p className="text-xl text-gray-400 mb-16 max-w-2xl mx-auto leading-relaxed font-light transform transition-all duration-700 delay-300">
-              Smart, personalized therapeutic guidance for your mental health, emotional well-being, 
-              and personal growth—right when you need it.
+             Personalized therapeutic guidance right when you need it.
             </p>
             
             {/* 3D CTA Button */}

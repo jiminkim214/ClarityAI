@@ -27,7 +27,6 @@ interface Message {
 
 export function ChatInterface() {
   const [inputMessage, setInputMessage] = useState('');
-  const [isRecording, setIsRecording] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const [sessionId] = useState(() => `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`);
   const [typingSpeed, setTypingSpeed] = useState(50);
@@ -185,16 +184,6 @@ export function ChatInterface() {
         </div>
         
         <div className="flex items-center gap-2">
-          <button 
-            onClick={() => setIsRecording(!isRecording)}
-            className={`p-3 rounded-full transition-all ${
-              isRecording 
-                ? 'bg-red-500 text-white animate-pulse' 
-                : 'hover:bg-white/10 text-gray-400'
-            }`}
-          >
-            {isRecording ? <MicOff className="w-5 h-5" /> : <Mic className="w-5 h-5" />}
-          </button>
           <button className="p-3 hover:bg-white/10 rounded-full transition-colors text-gray-400">
             <Volume2 className="w-5 h-5" />
           </button>
@@ -559,9 +548,8 @@ export function ChatInterface() {
               value={inputMessage}
               onChange={(e) => setInputMessage(e.target.value)}
               onKeyPress={handleKeyPress}
-              placeholder={isRecording ? "🎤 Recording..." : messages.length === 0 ? "Share what's on your mind..." : "Continue the conversation..."}
               className="w-full p-4 bg-white/5 backdrop-blur-sm border border-white/20 rounded-2xl text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-white/30 focus:border-transparent transition-all pr-12"
-              disabled={isTyping || isRecording || !isConnected}
+              disabled={isTyping || !isConnected}
             />
             
             {/* Character count */}

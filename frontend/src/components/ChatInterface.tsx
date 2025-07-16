@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Send, Volume2, Lock, MessageCircle, Brain, AlertCircle, Mic, MicOff, Settings, MoreVertical, Copy, ThumbsUp, ThumbsDown, Bookmark, Share, Zap, Heart, Star } from 'lucide-react';
+import { Send, MessageCircle, Brain, AlertCircle,Settings,Copy, ThumbsUp, Bookmark, Share, Zap, Heart, Star } from 'lucide-react';
 import { useChat } from '../hooks/useChat';
 
 interface Message {
@@ -30,14 +30,12 @@ export function ChatInterface() {
   const [showSettings, setShowSettings] = useState(false);
   const [sessionId] = useState(() => `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`);
   const [typingSpeed, setTypingSpeed] = useState(50);
-  const [showQuickReplies, setShowQuickReplies] = useState(true);
-  const [aiPersonality, setAiPersonality] = useState('empathetic');
   const [sessionDuration, setSessionDuration] = useState(0);
   const [connectionError, setConnectionError] = useState<string | null>(null);
   
   // New state for slider interactions
   const [isTypingSpeedActive, setIsTypingSpeedActive] = useState(false);
-  const [typingSpeedTimeout, setTypingSpeedTimeout] = useState<NodeJS.Timeout | null>(null);
+  const [typingSpeedTimeout, setTypingSpeedTimeout] = useState<ReturnType<typeof setTimeout> | null>(null);
   
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -127,7 +125,6 @@ export function ChatInterface() {
     
     // Send message with context
     await sendMessage(textToSend, {
-      personality: aiPersonality,
       typing_speed: typingSpeed,
       session_duration: sessionDuration
     });
@@ -165,7 +162,7 @@ export function ChatInterface() {
             }`}></div>
           </div>
           <div>
-            <h3 className="text-white font-medium text-lg">Clarity AI</h3>
+            <h3 className="text-white font-medium text-lg">ClarityAI</h3>
             <div className="flex items-center gap-3 text-sm">
               <div className="flex items-center gap-1">
                 <div className={`w-2 h-2 rounded-full ${isConnected ? 'bg-green-400' : 'bg-red-400'}`}></div>
@@ -184,9 +181,6 @@ export function ChatInterface() {
         </div>
         
         <div className="flex items-center gap-2">
-          <button className="p-3 hover:bg-white/10 rounded-full transition-colors text-gray-400">
-            <Volume2 className="w-5 h-5" />
-          </button>
           <button 
             onClick={() => setShowSettings(!showSettings)}
             className="p-3 hover:bg-white/10 rounded-full transition-colors text-gray-400"
@@ -261,34 +255,6 @@ export function ChatInterface() {
                 <span>Thoughtful</span>
               </div>
             </div>
-            
-            <div>
-              <label className="text-gray-300 text-sm block mb-2">AI Personality</label>
-              <select
-                value={aiPersonality}
-                onChange={(e) => setAiPersonality(e.target.value)}
-                className="w-full bg-white/10 border border-white/20 rounded-lg p-2 text-white focus:outline-none focus:ring-2 focus:ring-purple-500/50 transition-all"
-              >
-                <option value="empathetic">Empathetic</option>
-                <option value="analytical">Analytical</option>
-                <option value="supportive">Supportive</option>
-                <option value="direct">Direct</option>
-              </select>
-            </div>
-            
-            <div className="flex items-center justify-between">
-              <span className="text-gray-300 text-sm">Quick Replies</span>
-              <button
-                onClick={() => setShowQuickReplies(!showQuickReplies)}
-                className={`relative w-12 h-6 rounded-full transition-colors duration-300 ${
-                  showQuickReplies ? 'bg-purple-500' : 'bg-gray-600'
-                }`}
-              >
-                <div className={`absolute top-0.5 w-5 h-5 bg-white rounded-full transition-transform duration-300 ${
-                  showQuickReplies ? 'translate-x-6' : 'translate-x-0.5'
-                }`}></div>
-              </button>
-            </div>
           </div>
         </div>
       )}
@@ -306,7 +272,7 @@ export function ChatInterface() {
             </div>
             
             <div className="space-y-3">
-              <h3 className="text-2xl font-medium text-white">Welcome to Clarity AI</h3>
+              <h3 className="text-2xl font-medium text-white">Welcome to ClarityAI</h3>
               <p className="text-gray-400 max-w-md leading-relaxed">
                 I'm here to provide psychologically-informed support using advanced reasoning and therapeutic insights. 
                 Share what's on your mind - this is a safe, confidential space.
@@ -519,7 +485,7 @@ export function ChatInterface() {
       </div>
 
       {/* Quick Replies - Clean Grid Layout */}
-      {showQuickReplies && messages.length === 0 && (
+      {messages.length === 0 && (
         <div className="px-6 py-4 border-t border-white/10">
           <div className="text-center mb-4">
             <span className="text-xs text-gray-400">Quick start suggestions:</span>

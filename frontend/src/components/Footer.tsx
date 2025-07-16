@@ -1,5 +1,4 @@
-import React from 'react';
-import { Brain, Twitter, Github, Linkedin, Mail } from 'lucide-react';
+import { Brain, Github, Linkedin, Mail } from 'lucide-react';
 
 export function Footer() {
   return (

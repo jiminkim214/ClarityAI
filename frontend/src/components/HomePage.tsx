@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Navigation } from './Navigation';
-import { MessageCircle, Brain, Shield, Zap, ArrowRight, Sparkles, Star, Orbit, Layers } from 'lucide-react';
+import { Brain, Shield, Zap, ArrowRight, Sparkles} from 'lucide-react';
 
 interface HomePageProps {
   currentSection: 'home' | 'chat';

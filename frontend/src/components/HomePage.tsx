@@ -364,10 +364,6 @@ export function HomePage({ currentSection, setCurrentSection, isLoggedIn, setIsL
                     <div className="absolute inset-0 bg-white/20 scale-0 group-hover:scale-100 transition-transform duration-500 rounded-full"></div>
                     <span className="relative z-10">Try Clarity AI</span>
                   </button>
-                  
-                  <button className="px-8 py-4 border border-white/20 rounded-full text-white font-medium hover:bg-white/10 transition-all duration-300 transform hover:scale-105">
-                    Learn More
-                  </button>
                 </div>
               </div>
             </div>

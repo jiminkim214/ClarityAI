@@ -101,7 +101,6 @@ export function HomePage({ currentSection, setCurrentSection, isLoggedIn, setIsL
                 <div className="absolute inset-0 bg-purple-400/20 rounded-full blur-sm group-hover:blur-md transition-all duration-300"></div>
               </div>
               Smarter Decisions, Every Day
-              <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
             </div>
             
             {/* Main Heading with 3D Effect */}

@@ -1,3 +1,5 @@
+import { supabase } from '../lib/supabase';
+
 interface ChatMessage {
   content: string;
   session_id: string;
@@ -33,13 +35,27 @@ class ApiService {
     this.wsUrl = this.baseUrl.replace('http', 'ws');
   }
 
+  private async getAuthHeaders(): Promise<Record<string, string>> {
+    const { data: { session } } = await supabase.auth.getSession();
+    
+    const headers: Record<string, string> = {
+      'Content-Type': 'application/json',
+    };
+
+    if (session?.access_token) {
+      headers['Authorization'] = `Bearer ${session.access_token}`;
+    }
+
+    return headers;
+  }
+
   async sendMessage(message: ChatMessage): Promise<ChatResponse> {
     try {
+      const headers = await this.getAuthHeaders();
+      
       const response = await fetch(`${this.baseUrl}/chat`, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        headers,
         body: JSON.stringify(message),
       });
 
@@ -48,7 +64,8 @@ class ApiService {
         throw new Error(error.detail || 'Failed to send message');
       }
 
-      return await response.json();
+      const data: ChatResponse = await response.json();
+      return data;
     } catch (error) {
       console.error('API Error:', error);
       throw error;
@@ -57,7 +74,11 @@ class ApiService {
 
   async getSessionHistory(sessionId: string): Promise<any[]> {
     try {
-      const response = await fetch(`${this.baseUrl}/session/${sessionId}/history`);
+      const headers = await this.getAuthHeaders();
+      
+      const response = await fetch(`${this.baseUrl}/session/${sessionId}/history`, {
+        headers,
+      });
       
       if (!response.ok) {
         throw new Error('Failed to fetch session history');

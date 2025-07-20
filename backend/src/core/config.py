@@ -8,6 +8,11 @@ class Settings(BaseSettings):
     database_url: str = "postgresql://user:password@localhost:5432/therapy_ai"
     redis_url: str = "redis://localhost:6379"
     
+    # Supabase Configuration
+    supabase_url: Optional[str] = None
+    supabase_service_role_key: Optional[str] = None
+    supabase_anon_key: Optional[str] = None
+    
     # Vector Database
     chroma_persist_directory: str = "./data/chroma_db"
     

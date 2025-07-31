@@ -3,10 +3,10 @@ import { Navigation } from './components/Navigation';
 import { ChatInterface } from './components/ChatInterface';
 import { Footer } from './components/Footer';
 import { HomePage } from './components/HomePage';
-import { AuthProvider } from './contexts/AuthContext';
 
 function App() {
   const [currentSection, setCurrentSection] = useState<'home' | 'chat'>('home');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   const renderSection = () => {
     switch (currentSection) {
@@ -16,6 +16,8 @@ function App() {
             <Navigation 
               currentSection={currentSection} 
               setCurrentSection={setCurrentSection}
+              isLoggedIn={isLoggedIn}
+              setIsLoggedIn={setIsLoggedIn}
             />
             <div className="container mx-auto px-6 pt-32 pb-8">
               <div className="max-w-4xl mx-auto">
@@ -37,11 +39,7 @@ function App() {
     }
   };
 
-  return (
-    <AuthProvider>
-      <div className="min-h-screen">{renderSection()}</div>
-    </AuthProvider>
-  );
+  return <div className="min-h-screen">{renderSection()}</div>;
 }
 
 export default App;

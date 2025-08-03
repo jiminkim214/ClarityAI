@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Navigation } from './components/Navigation';
 import { ChatInterface } from './components/ChatInterface';
 import { Footer } from './components/Footer';
@@ -32,8 +32,6 @@ function App() {
             <HomePage 
               currentSection={currentSection}
               setCurrentSection={setCurrentSection}
-              isLoggedIn={isLoggedIn}
-              setIsLoggedIn={setIsLoggedIn}
             />
             <Footer />
           </>

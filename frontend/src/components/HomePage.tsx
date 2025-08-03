@@ -5,11 +5,9 @@ import { Brain, Shield, Zap, ArrowRight, Sparkles} from 'lucide-react';
 interface HomePageProps {
   currentSection: 'home' | 'chat';
   setCurrentSection: (section: 'home' | 'chat') => void;
-  isLoggedIn: boolean;
-  setIsLoggedIn: (loggedIn: boolean) => void;
 }
 
-export function HomePage({ currentSection, setCurrentSection, isLoggedIn, setIsLoggedIn }: HomePageProps) {
+export function HomePage({ currentSection, setCurrentSection }: HomePageProps) {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
   const [isVisible, setIsVisible] = useState(false);
   const heroRef = useRef<HTMLDivElement>(null);
@@ -82,8 +80,6 @@ export function HomePage({ currentSection, setCurrentSection, isLoggedIn, setIsL
         <Navigation 
           currentSection={currentSection} 
           setCurrentSection={setCurrentSection}
-          isLoggedIn={isLoggedIn}
-          setIsLoggedIn={setIsLoggedIn}
         />
         
         <main className="container mx-auto px-6 pt-32 pb-20">

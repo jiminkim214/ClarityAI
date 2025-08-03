@@ -85,3 +85,44 @@ class TopicCluster(Base):
     keywords = Column(JSON)  # Top keywords for the topic
     representative_docs = Column(JSON)  # Sample documents
     created_at = Column(DateTime(timezone=True), server_default=func.now())
+
+
+class UserProfile(Base):
+    __tablename__ = "user_profiles"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    user_id = Column(String, unique=True, index=True)  # Supabase user ID
+    email = Column(String, unique=True, index=True)
+    full_name = Column(String)
+    avatar_url = Column(String)
+    preferences = Column(JSON)  # User preferences for therapy
+    therapy_goals = Column(JSON)  # User's therapy goals
+    privacy_settings = Column(JSON)  # Privacy preferences
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    updated_at = Column(DateTime(timezone=True), onupdate=func.now())
+    
+    # Relationships
+    sessions = relationship("UserSession", foreign_keys="UserSession.user_id", primaryjoin="UserProfile.user_id == UserSession.user_id")
+
+
+class TherapySession(Base):
+    __tablename__ = "therapy_sessions"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    session_id = Column(String, unique=True, index=True)
+    user_id = Column(String, ForeignKey("user_profiles.user_id"))
+    session_name = Column(String)
+    session_summary = Column(Text)
+    mood_before = Column(String)
+    mood_after = Column(String)
+    topics_discussed = Column(JSON)
+    insights_generated = Column(JSON)
+    session_duration = Column(Integer)  # Duration in minutes
+    session_rating = Column(Integer)  # User rating 1-5
+    is_completed = Column(Boolean, default=False)
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    updated_at = Column(DateTime(timezone=True), onupdate=func.now())
+    
+    # Relationships
+    user = relationship("UserProfile", foreign_keys=[user_id])
+    messages = relationship("SessionMessage", foreign_keys="SessionMessage.session_id", primaryjoin="TherapySession.session_id == SessionMessage.session_id")

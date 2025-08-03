@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 from loguru import logger
 
 from ..models.schemas import ChatMessage, ChatResponse
-from ..models.database_models import UserSession, SessionMessage
+from ..models.database_models import UserSession, SessionMessage, UserProfile
 from ..core.database import get_database_session
 from .vector_store import VectorStoreService
 from .llm_service import LLMService
@@ -17,35 +17,37 @@ class TherapyService:
     
     def __init__(self):
         self.vector_store = VectorStoreService()
-        self.topic_service = AdvancedTopicModeling()
         self.llm_service = LLMService()
-        self.pattern_service = MLPatternDetection()
+        self.topic_modeling = AdvancedTopicModeling()
+        self.pattern_detection = MLPatternDetection()
+        self.max_context_length = 4000
     
     async def process_message(self, message: ChatMessage) -> ChatResponse:
-        """Process a user message through the complete therapy pipeline."""
+        """Process a user message and generate a therapeutic response."""
         try:
-            # 1. Ensure session exists
-            await self._ensure_session_exists(message.session_id)
+            # Ensure session exists
+            user_id = message.context.get("user_id", "anonymous")
+            await self._ensure_session_exists(message.session_id, user_id)
             
-            # 2. Detect psychological patterns
-            patterns = await self.pattern_service.detect_patterns(message.content)
+            # Detect psychological patterns
+            patterns = await self.pattern_detection.detect_patterns(message.content)
             
-            # 3. Classify topic
-            topic_info = await self.topic_service.predict_topic(message.content)
+            # Classify topic
+            topic_info = await self.topic_modeling.predict_topic(message.content)
             
-            # 4. Determine emotional state
-            emotional_state_info = await self.pattern_service.detect_emotional_state(message.content)
+            # Determine emotional state
+            emotional_state_info = await self.pattern_detection.detect_emotional_state(message.content)
             emotional_state = emotional_state_info.get("primary_emotion", "neutral")
             
-            # 5. Retrieve similar responses using RAG
+            # Retrieve similar responses using RAG
             retrieved_responses = await self._retrieve_similar_responses(
                 message.content, topic_info, emotional_state
             )
             
-            # 6. Get session context for continuity
+            # Get session context for continuity
             session_history = await self._get_session_history(message.session_id)
             
-            # 7. Build context for LLM
+            # Build context for LLM
             context = {
                 "session_id": message.session_id,
                 "timestamp": datetime.now(),
@@ -56,7 +58,7 @@ class TherapyService:
                 "user_context": message.context or {}
             }
             
-            # 8. Generate therapeutic response
+            # Generate therapeutic response
             response = await self.llm_service.generate_therapeutic_response(
                 user_message=message.content,
                 context=context,
@@ -64,10 +66,10 @@ class TherapyService:
                 session_history=session_history
             )
             
-            # 9. Store conversation in database
+            # Store conversation in database
             await self._store_conversation(message, response)
             
-            # 10. Update vector store with new message
+            # Update vector store with new message
             await self.vector_store.add_user_session_message(
                 session_id=message.session_id,
                 message_id=f"{message.session_id}_{datetime.now().timestamp()}",
@@ -86,7 +88,7 @@ class TherapyService:
             logger.error(f"Error processing message: {e}")
             raise
     
-    async def _ensure_session_exists(self, session_id: str) -> None:
+    async def _ensure_session_exists(self, session_id: str, user_id: str = "anonymous") -> None:
         """Ensure user session exists in database."""
         db = next(get_database_session())
         
@@ -98,11 +100,16 @@ class TherapyService:
             if not session:
                 new_session = UserSession(
                     session_id=session_id,
-                    user_id="anonymous"  # For now, using anonymous users
+                    user_id=user_id
                 )
                 db.add(new_session)
                 db.commit()
-                logger.info(f"Created new session: {session_id}")
+                logger.info(f"Created new session: {session_id} for user: {user_id}")
+            elif session.user_id == "anonymous" and user_id != "anonymous":
+                # Update anonymous session with authenticated user
+                session.user_id = user_id
+                db.commit()
+                logger.info(f"Updated session {session_id} with authenticated user: {user_id}")
                 
         except Exception as e:
             db.rollback()
@@ -111,6 +118,24 @@ class TherapyService:
         finally:
             db.close()
     
+    async def verify_session_access(self, session_id: str, user_id: str) -> bool:
+        """Verify if user has access to the session."""
+        db = next(get_database_session())
+        
+        try:
+            session = db.query(UserSession).filter(
+                UserSession.session_id == session_id,
+                UserSession.user_id == user_id
+            ).first()
+            
+            return session is not None
+            
+        except Exception as e:
+            logger.error(f"Error verifying session access: {e}")
+            return False
+        finally:
+            db.close()
+
     async def _retrieve_similar_responses(
         self, 
         user_message: str, 

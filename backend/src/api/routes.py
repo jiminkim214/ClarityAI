@@ -1,11 +1,12 @@
 from fastapi import APIRouter, Depends, HTTPException, WebSocket, WebSocketDisconnect
 from fastapi.responses import JSONResponse
 from sqlalchemy.orm import Session
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Optional
 from datetime import datetime
 import json
 
 from ..core.database import get_database_session
+from ..core.auth import get_current_user, require_auth
 from ..models.schemas import (
     ChatMessage, ChatResponse, SessionHistory, 
     HealthCheck, ProcessingStats, TopicInfo
@@ -20,14 +21,25 @@ vector_store = VectorStoreService()
 # Create router
 router = APIRouter()
 
+# Include auth routes
+from .auth_routes import router as auth_router
+router.include_router(auth_router)
+
 
 @router.post("/chat", response_model=ChatResponse)
 async def chat_endpoint(
     message: ChatMessage,
-    db: Session = Depends(get_database_session)
+    db: Session = Depends(get_database_session),
+    current_user: Optional[Dict[str, Any]] = Depends(get_current_user)
 ):
     """Main chat endpoint for processing user messages."""
     try:
+        # Add user context if authenticated
+        if current_user:
+            message.context = message.context or {}
+            message.context["user_id"] = current_user["user_id"]
+            message.context["email"] = current_user["email"]
+        
         response = await therapy_service.process_message(message)
         return response
     except Exception as e:
@@ -37,10 +49,18 @@ async def chat_endpoint(
 @router.get("/session/{session_id}/history")
 async def get_session_history(
     session_id: str,
-    db: Session = Depends(get_database_session)
+    db: Session = Depends(get_database_session),
+    current_user: Optional[Dict[str, Any]] = Depends(get_current_user)
 ):
     """Get conversation history for a session."""
     try:
+        # If user is authenticated, verify they own the session
+        if current_user:
+            user_id = current_user["user_id"]
+            has_access = await therapy_service.verify_session_access(session_id, user_id)
+            if not has_access:
+                raise HTTPException(status_code=403, detail="Access denied to this session")
+        
         history = await therapy_service.get_session_history(session_id)
         return history
     except Exception as e:

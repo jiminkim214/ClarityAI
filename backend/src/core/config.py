@@ -12,8 +12,12 @@ class Settings(BaseSettings):
     supabase_url: Optional[str] = None
     supabase_service_role_key: Optional[str] = None
     supabase_anon_key: Optional[str] = None
+<<<<<<< HEAD
     supabase_jwt_secret: Optional[str] = None
     supabase_db_password: Optional[str] = None
+=======
+    supabase_jwt_secret: str
+>>>>>>> origin/main
     
     # Vector Database
     chroma_persist_directory: str = "./data/chroma_db"

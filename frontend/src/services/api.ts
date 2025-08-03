@@ -35,7 +35,7 @@ class ApiService {
 
   async sendMessage(message: ChatMessage): Promise<ChatResponse> {
     try {
-      const response = await fetch(`${this.baseUrl}/chat`, {
+      const response = await fetch(`${this.baseUrl}/api/v1/chat`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -57,7 +57,7 @@ class ApiService {
 
   async getSessionHistory(sessionId: string): Promise<any[]> {
     try {
-      const response = await fetch(`${this.baseUrl}/session/${sessionId}/history`);
+      const response = await fetch(`${this.baseUrl}/api/v1/session/${sessionId}/history`);
       
       if (!response.ok) {
         throw new Error('Failed to fetch session history');
@@ -73,7 +73,7 @@ class ApiService {
 
   async getAvailableTopics(): Promise<any[]> {
     try {
-      const response = await fetch(`${this.baseUrl}/topics`);
+      const response = await fetch(`${this.baseUrl}/api/v1/topics`);
       
       if (!response.ok) {
         throw new Error('Failed to fetch topics');
@@ -98,7 +98,7 @@ class ApiService {
   }
 
   createWebSocketConnection(sessionId: string): WebSocket {
-    // Ensure /api/v1 is included in the WebSocket path to match backend route
+    // WebSocket connection for real-time chat
     const ws = new WebSocket(`${this.wsUrl}/api/v1/ws/${sessionId}`);
     
     ws.onopen = () => {

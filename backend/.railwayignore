@@ -3,3 +3,7 @@ venv/
 __pycache__/
 .DS_Store
 .env.local
+requirements-full.txt
+data/
+models/
+src/ml/

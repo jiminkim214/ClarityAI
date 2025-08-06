@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: clarity-ai-backend
+    env: python3
+    runtime: python-3.11
+    buildCommand: ./build.sh
+    startCommand: ./start.sh
+    plan: free
+    env:
+      - key: PORT
+        value: 8000
+      - key: TOKENIZERS_PARALLELISM
+        value: false
+      - key: ANONYMIZED_TELEMETRY
+        value: false
+    envVars:
+      - key: DATABASE_URL
+        fromService:
+          type: pserv
+          name: clarity-ai-db
+          property: connectionString

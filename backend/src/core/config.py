@@ -12,7 +12,12 @@ class Settings(BaseSettings):
     supabase_url: Optional[str] = None
     supabase_service_role_key: Optional[str] = None
     supabase_anon_key: Optional[str] = None
+<<<<<<< HEAD
+    supabase_jwt_secret: Optional[str] = None
+    supabase_db_password: Optional[str] = None
+=======
     supabase_jwt_secret: str
+>>>>>>> origin/main
     
     # Vector Database
     chroma_persist_directory: str = "./data/chroma_db"
@@ -32,7 +37,12 @@ class Settings(BaseSettings):
     huggingface_token: Optional[str] = None
     
     # CORS
-    cors_origins: List[str] = ["http://localhost:3000", "http://localhost:5173"]
+    cors_origins: List[str] = [
+        "http://localhost:3000", 
+        "http://localhost:5173",
+        "https://clarity-1swll3i8t-jiminkim214-3886s-projects.vercel.app",
+        "https://clarity-r2f5o6m8k-jiminkim214-3886s-projects.vercel.app"
+    ]
     
     # Logging
     log_level: str = "INFO"
